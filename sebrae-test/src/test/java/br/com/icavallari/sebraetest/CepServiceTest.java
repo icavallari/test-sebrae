@@ -36,7 +36,7 @@ public class CepServiceTest {
             Mockito.verify(cepRepositoryMock, Mockito.never()).getCep(Mockito.any());
         });
 
-        Assertions.assertEquals("The Cep must contains 8 characters", e.getMessage());
+        Assertions.assertEquals("O CEP deve conter 8 caracteres", e.getMessage());
     }
 
     @Test

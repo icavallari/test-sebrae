@@ -19,7 +19,7 @@ public class CepService {
         cep = cep.replace("-", "");
 
         if (cep.length() != 8) {
-            throw new BusinessException("The Cep must contains 8 characters");
+            throw new BusinessException("O CEP deve conter 8 caracteres");
         }
 
         try {
