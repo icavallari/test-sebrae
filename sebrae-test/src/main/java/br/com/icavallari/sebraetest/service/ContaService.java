@@ -15,25 +15,28 @@ public class ContaService {
 
     private final ContaRepository contaRepository;
 
-    public List<Conta> findAll(){
+    public List<Conta> findAll() {
         return contaRepository.findAll();
     }
 
-    public Conta findById(Integer id) throws Exception {
+    public Conta findById(Integer id) throws BusinessException {
         return findContaById(id);
     }
 
-    public Conta create(ContaDTO dto){
+    public Conta create(ContaDTO dto) throws BusinessException {
+        validateFields(dto);
+
         Conta conta = new Conta();
         conta.setNome(dto.nome());
         conta.setDescricao(dto.descricao());
 
-        // TODO implementar validacoes
         return contaRepository.save(conta);
     }
 
     @Transactional
-    public Conta update(ContaDTO dto) throws Exception {
+    public Conta update(ContaDTO dto) throws BusinessException {
+        validateFields(dto);
+
         Conta conta = findContaById(dto.id());
         conta.setDescricao(dto.descricao());
         conta.setNome(dto.nome());
@@ -41,14 +44,22 @@ public class ContaService {
     }
 
     @Transactional
-    public Conta delete(Integer id) throws Exception {
+    public Conta delete(Integer id) throws BusinessException {
         Conta conta = findContaById(id);
         contaRepository.delete(conta);
         return conta;
     }
 
-    private Conta findContaById(Integer id) throws Exception {
-        return contaRepository.findById(id).orElseThrow(() -> new Exception("Conta not found"));
+    private void validateFields(ContaDTO dto) throws BusinessException {
+        if ("".equals(dto.nome()) || dto.nome() == null) {
+            throw new BusinessException("O nome deve ser informado");
+        } else if ("".equals(dto.descricao()) || dto.descricao() == null) {
+            throw new BusinessException("A descrição deve ser informada");
+        }
+    }
+
+    private Conta findContaById(Integer id) throws BusinessException {
+        return contaRepository.findById(id).orElseThrow(() -> new BusinessException("Conta não encontrada"));
     }
 
 }

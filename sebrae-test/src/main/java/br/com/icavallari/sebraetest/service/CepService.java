@@ -15,13 +15,11 @@ public class CepService {
 
     private final CepRepository cepRepository;
 
-    public ResponseEntity<CepModel> getCep(String cep) {
+    public ResponseEntity<CepModel> getCep(String cep) throws BusinessException {
         cep = cep.replace("-", "");
 
         if (cep.length() != 8) {
-
-            // TODO improve validations e exceptions
-            throw new IllegalArgumentException("The Cep must contains 8 characters");
+            throw new BusinessException("The Cep must contains 8 characters");
         }
 
         try {
