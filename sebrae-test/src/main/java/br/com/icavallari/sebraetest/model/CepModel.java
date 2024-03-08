@@ -1,5 +1,8 @@
 package br.com.icavallari.sebraetest.model;
 
+import lombok.Data;
+
+@Data
 public class CepModel {
 
     private String cep;
